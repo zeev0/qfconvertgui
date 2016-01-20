@@ -86,7 +86,7 @@ class Window(Gtk.Window):
         macros_dir = self.df_entry.get_text()
         qf = self.qf_entry.get_text() + '/qfconverter.py'
         csv = self.file_entry.get_text()
-        # what the fuck
+        # what the fuck?
         macro = os.path.splitext(csv)[0].split('/')[::-1][0] + '/'
         info = call(["python", qf, csv, macro])
         buf_txt = ''
