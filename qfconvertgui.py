@@ -1,7 +1,10 @@
 #!/usr/bin/env python
-
-from gi.repository import Gtk
+#
+# qfconvertergui.py
+# -----------------
 import os
+from gi.repository import Gtk
+from subprocess import call
 
 class Window(Gtk.Window):
 
@@ -38,6 +41,7 @@ class Window(Gtk.Window):
         file_button.connect('clicked', self.on_file_open)
 
         go_button = Gtk.Button(label="Go!")
+        go_button.connect('clicked', self.on_go)
 
         grid.attach(qf_button,  0,0,1,1)
         grid.attach(qf_entry,   1,0,1,1)
@@ -45,7 +49,8 @@ class Window(Gtk.Window):
         grid.attach(df_entry,   1,1,1,1)
         grid.attach(file_button,0,2,1,1)
         grid.attach(file_entry, 1,2,1,1)
-        grid.attach(infobox,    0,3,2,1)
+        grid.attach(go_button,  0,3,2,1)
+        grid.attach(infobox,    0,4,2,1)
         
 
     def on_dir_open(self, widget):
@@ -72,19 +77,26 @@ class Window(Gtk.Window):
                                          Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
         response = chooser.run()
         if response == Gtk.ResponseType.OK:
-            print("Open clicked")
-            print("Folder selected: " + chooser.get_filename())
             widget.friend.set_text(chooser.get_filename())
-        elif response == Gtk.ResponseType.CANCEL:
-            print("Cancel clicked")
-
         chooser.destroy()
 
-    #TODO
+
+    # TODO, throws error on non-zero exit
     def on_go(self,widget):
         macros_dir = self.df_entry.get_text()
-        qf_dir = self.qf_entry.get_text()
-        filename = self.file_entry.get_text()
+        qf = self.qf_entry.get_text() + '/qfconverter.py'
+        csv = self.file_entry.get_text()
+        # what the fuck
+        macro = os.path.splitext(csv)[0].split('/')[::-1][0] + '/'
+        info = call(["python", qf, csv, macro])
+        buf_txt = ''
+        if info == 0:
+            buf_txt = 'Success'
+        print(info)
+            
+        buf = Gtk.TextBuffer()
+        buf.set_text()
+        self.infobox.set_buffer(buf)
 
 
 
@@ -94,6 +106,7 @@ class Button(Gtk.Button):
         Gtk.Button.__init__(self,label)
         self.friend = friend
     
+
 win = Window()
 win.connect("delete-event", Gtk.main_quit)
 win.show_all()
