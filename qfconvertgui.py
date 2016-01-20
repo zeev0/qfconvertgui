@@ -4,7 +4,7 @@
 # -----------------
 import os
 from gi.repository import Gtk
-from subprocess import call
+from subprocess import Popen,PIPE
 
 class Window(Gtk.Window):
 
@@ -83,19 +83,20 @@ class Window(Gtk.Window):
 
     # TODO, throws error on non-zero exit
     def on_go(self,widget):
-        macros_dir = self.df_entry.get_text()
+        macros_dir = self.df_entry.get_text() + '/'
         qf = self.qf_entry.get_text() + '/qfconverter.py'
         csv = self.file_entry.get_text()
         # what the fuck?
-        macro = os.path.splitext(csv)[0].split('/')[::-1][0] + '/'
-        info = call(["python", qf, csv, macro])
-        buf_txt = ''
-        if info == 0:
-            buf_txt = 'Success'
-        print(info)
-            
+        macro_name = os.path.splitext(csv)[0].split('/')[::-1][0] + '.mak'
+        subprocess = Popen(["python", qf, csv, macros_dir + macro_name],
+                           stdout=PIPE, stderr=PIPE)
+        output, err = subprocess.communicate()
+        buf_txt = output + err
+        if buf_txt == '':
+            buf_txt = 'Success! Created macro file ' + macro_name
+        print(output,err)
         buf = Gtk.TextBuffer()
-        buf.set_text()
+        buf.set_text(buf_txt)
         self.infobox.set_buffer(buf)
 
 
