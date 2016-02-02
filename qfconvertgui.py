@@ -82,7 +82,6 @@ class Window(Gtk.Window):
         chooser.destroy()
 
 
-    # TODO, throws error on non-zero exit
     def on_go(self,widget):
         macros_dir = self.df_entry.get_text() + '/'
         qf = self.qf_entry.get_text() + '/qfconvert.py'
