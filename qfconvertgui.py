@@ -18,6 +18,7 @@ class Window(Gtk.Window):
         qf_entry = self.qf_entry = Gtk.Entry()
         qf_entry.set_hexpand(True)
         qf_entry.set_placeholder_text("Path to qfconverter's root directory...")
+        qf_entry.set_text(os.getcwd())
 
         df_entry = self.df_entry = Gtk.Entry()
         df_entry.set_hexpand(True)
