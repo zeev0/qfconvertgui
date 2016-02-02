@@ -100,7 +100,6 @@ class Window(Gtk.Window):
         self.infobox.set_buffer(buf)
 
 
-
 class Button(Gtk.Button):
 
     def __init__(self, friend, label=''):
@@ -108,7 +107,11 @@ class Button(Gtk.Button):
         self.friend = friend
     
 
-win = Window()
-win.connect("delete-event", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+def main():
+    win = Window()
+    win.connect("delete-event", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()
+    
+if __name__ == "__main__":
+    main()
