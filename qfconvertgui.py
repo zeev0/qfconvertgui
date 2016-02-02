@@ -84,7 +84,7 @@ class Window(Gtk.Window):
     # TODO, throws error on non-zero exit
     def on_go(self,widget):
         macros_dir = self.df_entry.get_text() + '/'
-        qf = self.qf_entry.get_text() + '/qfconverter.py'
+        qf = self.qf_entry.get_text() + '/qfconvert.py'
         csv = self.file_entry.get_text()
         # what the fuck?
         macro_name = os.path.splitext(csv)[0].split('/')[::-1][0] + '.mak'
